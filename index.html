@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chain-of-Model Learning for Language Models</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Embedded CSS for single-file execution -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: #1d1d1f;
+        }
+        header {
+            background-color: #ffffff;
+            padding: 4rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        h1, h2, h3 {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .lead {
+            color: #3d3d3f;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.25rem;
+        }
+        .btn-link-icon {
+            text-decoration: none;
+            color: #0066cc;
+            font-weight: 600;
+        }
+        .btn-link-icon::after {
+            content: '↗';
+            display: inline-block;
+            margin-left: 4px;
+            font-size: 0.9em;
+        }
+
+        /* Abstract Section Style */
+        .abstract-section {
+            background-color: #ffffff;
+            padding: 4rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .abstract-content p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #3d3d3f;
+        }
+
+        section {
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+        }
+        .text-muted-white {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .interactive-module-section {
+            background-color: #f5f5f7;
+        }
+        .nav-pills .nav-link {
+            color: #3d3d3f;
+            background-color: #e9ecef;
+            font-weight: 600;
+            margin: 0 5px;
+            border-radius: 999px;
+        }
+        .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+            color: #fff;
+            background-color: #0071e3;
+        }
+        .tab-content {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid #dee2e6;
+            margin-top: 1.5rem;
+        }
+        .results-board {
+            background-color: #fff;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.07);
+            border: 1px solid #dee2e6;
+        }
+        .results-header, .results-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            align-items: center;
+            text-align: center;
+        }
+        .results-header {
+            color: #6c757d;
+            font-weight: 600;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .results-row {
+            border-bottom: 1px solid #f1f3f5;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .results-row:last-child {
+            border-bottom: none;
+        }
+        .results-row:hover {
+            background-color: #f5f5f7;
+        }
+        .benchmark-name {
+            font-weight: 600;
+            color: #1d1d1f;
+            text-align: left;
+        }
+        .score {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .summary-row {
+            background-color: #f5f5f7;
+            font-weight: 700;
+            border-top: 2px solid #e9ecef;
+            border-radius: 0 0 0.75rem 0.75rem;
+        }
+        .best-score {
+            color: #198754;
+            position: relative;
+            display: inline-block;
+        }
+        .best-score::after {
+            content: 'Best';
+            position: absolute;
+            top: -1.2em;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #fff;
+            background-color: #198754;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+        .bg-dark-section {
+            background-color: #111;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold main-title">Chain-of-Model Learning for Language Models</h1>
+            <p class="lead mt-3 mb-4">A revolutionary architecture for efficient scaling and elastic inference.</p>
+            <div class="d-flex justify-content-center align-items-center gap-4">
+                <a href="https://arxiv.org/abs/2505.11820v2" class="btn-link-icon" target="_blank">Read paper</a>
+                <a href="https://github.com/microsoft/CoLM" class="btn-link-icon" target="_blank">View code</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Abstract Section -->
+    <section class="abstract-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <!-- MODIFIED: Uses a narrower column (7/12) on large screens for a focused look -->
+                <div class="col-lg-7 abstract-content">
+                    <p>We propose a novel learning paradigm, termed <strong>“Chain-of-Model” (CoM)</strong>, which incorporates a causal, chain-like structure into the hidden states of each layer. This approach introduces powerful new efficiencies in model training and unprecedented flexibility for deployment.</p>
+                    <p>The foundation of CoM is <strong>“Chain-of-Representation” (CoR)</strong>, which formulates the hidden state at each layer as a combination of multiple sub-representations, or “chains.” Critically, each chain in the output can only see its preceding input chains, enforcing a causal dependency. This structure allows a single model to house multiple sub-models of varying sizes.</p>
+                    <p>As a result, models built on the CoM framework can be progressively scaled by adding new chains to existing ones, and they can offer elastic inference by activating a variable number of chains. Our experimental results demonstrate that our CoLM family of models achieves performance comparable to standard Transformers while offering these significant advantages in extensibility and adaptability.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container-fluid p-0">
+        <!-- Interactive Module Section -->
+        <section class="my-5 py-5 interactive-module-section">
+            <div class="container">
+                <h2 class="text-center fw-bold">How CoLM Works: An Interactive Look</h2>
+                <p class="fs-5 text-muted col-lg-8 mx-auto text-center mt-3">CoLM applies the chain principle to the core components of the Transformer architecture. Click a tab below to see how each module is adapted.</p>
+                <ul class="nav nav-pills justify-content-center my-4" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation"><button class="nav-link active" id="pills-linear-tab" data-bs-toggle="pill" data-bs-target="#pills-linear" type="button" role="tab">Chain-of-Linear</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" id="pills-attention-tab" data-bs-toggle="pill" data-bs-target="#pills-attention" type="button" role="tab">Chain-of-Attention</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" id="pills-kv-tab" data-bs-toggle="pill" data-bs-target="#pills-kv" type="button" role="tab">CoLM-Air (KV Sharing)</button></li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-linear" role="tabpanel"><div class="row align-items-center"><div class="col-md-7"><img src="https://i.imgur.com/HnK25vO.png" class="img-fluid rounded-3" alt="Comparison of a standard Linear layer and a Chain-of-Linear layer."></div><div class="col-md-5"><h3 class="fw-semibold">The Building Block: Chain-of-Linear</h3><p>This is the fundamental component. Unlike a standard dense layer, the Chain-of-Linear layer has a causal structure. The output of chain `i` is only conditioned on the inputs from chains `1` to `i`, creating a nested, progressive computation that is key to CoLM's flexibility.</p></div></div></div>
+                    <div class="tab-pane fade" id="pills-attention" role="tabpanel"><div class="row align-items-center"><div class="col-md-7"><img src="https://i.imgur.com/k6KxO2E.png" class="img-fluid rounded-3" alt="Comparison of standard Attention and Chain-of-Attention."></div><div class="col-md-5"><h3 class="fw-semibold">The Core: Chain-of-Attention</h3><p>We extend the chain concept to the Multi-Head Attention mechanism. Each head is allocated to a specific chain, ensuring that information from different scales does not improperly blend. This preserves the causal structure and allows for dedicated query, key, and value computations per chain.</p></div></div></div>
+                    <div class="tab-pane fade" id="pills-kv" role="tabpanel"><div class="row align-items-center"><div class="col-md-7"><img src="https://i.imgur.com/8QfH4v9.png" class="img-fluid rounded-3" alt="Diagram showing KV sharing in CoLM-Air."></div><div class="col-md-5"><h3 class="fw-semibold">The Accelerator: CoLM-Air</h3><p>For maximum efficiency, CoLM-Air computes all Key and Value pairs within the first chain only. These are then shared across all subsequent chains. This ambitious design drastically reduces computation during inference, leading to the breakthrough in prefilling speed.</p></div></div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Innovative Results Section -->
+        <section class="my-5 py-5">
+            <div class="container">
+                <h2 class="text-center fw-bold">Competitive Performance, Unmatched Flexibility</h2>
+                <p class="fs-5 text-muted col-lg-8 mx-auto text-center mt-3">CoLM delivers results on par with standard Transformers of similar size, proving you don't have to sacrifice performance to gain architectural flexibility and efficiency.</p>
+                <div class="results-board mt-5">
+                    <div class="results-header"><div style="text-align: left;">Benchmark</div><div>Baseline (1.10B)</div><div>CoLM (1.11B)</div><div>CoLM-Air (1.11B)</div></div>
+                    <div class="results-row"><div class="benchmark-name">HellaSwag</div><div class="score">40.01</div><div class="score">40.25</div><div class="score">39.85</div></div>
+                    <div class="results-row"><div class="benchmark-name">Obqa</div><div class="score">31.19</div><div class="score">31.39</div><div class="score">31.19</div></div>
+                    <div class="results-row"><div class="benchmark-name">WinoGranda</div><div class="score">52.72</div><div class="score">52.41</div><div class="score">52.09</div></div>
+                    <div class="results-row"><div class="benchmark-name">ARC-e</div><div class="score">43.52</div><div class="score">43.73</div><div class="score">44.30</div></div>
+                    <div class="results-row"><div class="benchmark-name">ARC-c</div><div class="score">23.63</div><div class="score">23.81</div><div class="score">23.63</div></div>
+                    <div class="results-row"><div class="benchmark-name">Boolq</div><div class="score">57.43</div><div class="score">58.01</div><div class="score">56.72</div></div>
+                    <div class="results-row"><div class="benchmark-name">Piqa</div><div class="score">67.30</div><div class="score">67.30</div><div class="score">66.76</div></div>
+                    <div class="results-row summary-row"><div class="benchmark-name">Average Score</div><div class="score">45.11</div><div class="score best-score">45.27</div><div class="score">44.80</div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Breakthrough Section -->
+        <section class="my-5 py-5 bg-dark-section text-white rounded-4 container">
+            <div class="container text-center">
+                <h2 class="fw-bold">The Breakthrough: Blazing-Fast Prefilling</h2>
+                <p class="fs-5 text-muted-white col-lg-8 mx-auto mt-3">By sharing Key-Value (KV) caches, our CoLM-Air variant radically accelerates the prefilling stage—a major bottleneck in long-context inference.</p>
+                <img src="https://i.imgur.com/uR2iJd0.png" class="img-fluid rounded-3 mt-4" alt="Charts showing CoLM-Air achieving significantly faster prefilling speeds.">
+                <p class="fs-4 mt-4 fw-bold">Achieve up to 27x faster prefilling speeds.</p>
+            </div>
+        </section>
+
+        <!-- Full Architecture Section -->
+        <section class="my-5 py-5">
+            <div class="container text-center">
+                 <h2 class="fw-bold">The Complete CoLM Architecture</h2>
+                 <p class="fs-5 text-muted col-lg-8 mx-auto mt-3">This diagram illustrates the full data flow within a CoLM layer. It shows how embeddings are processed through chain-aware normalization, attention with KV sharing, and a chained feed-forward network to produce progressively refined outputs for each scale.</p>
+                 <img src="https://i.imgur.com/Wd4x4Rz.png" class="img-fluid rounded-3 mt-4 border shadow-sm" alt="Full architecture diagram of the CoLM model.">
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-5 border-top">
+        <div class="container">
+            <p class="text-muted">Research by Kaitao Song, Xiaohua Wang, Xu Tan, and colleagues at Microsoft Research, Fudan University, Zhejiang University, and ShanghaiTech University.</p>
+            <p class="text-muted">arXiv:2505.11820v2 [cs.CL]</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
