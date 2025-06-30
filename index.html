@@ -571,7 +571,7 @@
                 const brainConfig = [{ count: 2, className: 'group-grey' }, { count: 2, className: 'group-blue' }, { count: 4, className: 'group-lightblue' }];
                 const brainConnectionLogic = (top, bottom) => parseInt(bottom.dataset.groupIndex) <= parseInt(top.dataset.groupIndex);
                 // Highlight the 4th neuron (index 3) in the top layer
-                createNetwork('network-brain', brainConfig, brainConnectionLogic, 3);
+                createNetwork('network-brain', brainConfig, brainConnectionLogic, -1);
 
                 const linearConfig = [{ count: 8, className: 'group-linear' }];
                 const linearConnectionLogic = () => true;
