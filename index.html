@@ -34,6 +34,9 @@
             margin-right: auto;
             font-size: 1.25rem;
         }
+        .main-title {
+            font-size: 2.75rem !important;
+        }
         .btn-link-icon {
             text-decoration: none;
             color: #0066cc;
@@ -45,8 +48,6 @@
             margin-left: 4px;
             font-size: 0.9em;
         }
-
-        /* Abstract Section Style */
         .abstract-section {
             background-color: #ffffff;
             padding: 4rem 0;
@@ -57,7 +58,6 @@
             line-height: 1.7;
             color: #3d3d3f;
         }
-
         section {
             padding-top: 4rem;
             padding-bottom: 4rem;
@@ -88,7 +88,7 @@
         }
         .tab-content {
             background-color: #ffffff;
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 1rem;
             border: 1px solid #dee2e6;
             margin-top: 1.5rem;
@@ -140,24 +140,166 @@
         }
         .best-score {
             color: #198754;
-            position: relative;
-            display: inline-block;
-        }
-        .best-score::after {
-            content: 'Best';
-            position: absolute;
-            top: -1.2em;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: #fff;
-            background-color: #198754;
-            padding: 2px 6px;
-            border-radius: 10px;
         }
         .bg-dark-section {
             background-color: #111;
+        }
+
+        /* --- START: Interactive Visualization CSS --- */
+        #interactive-viz-area {
+            --color-grey: #8d99ae;
+            --color-blue: #5a7dcb;
+            --color-lightblue: #4fc3f7;
+            --color-linear: #6c757d;
+            --color-highlight: #ff5722;
+            --color-line: rgba(0, 0, 0, 0.15);
+            --color-line-highlight: var(--color-highlight);
+            --cor-c1-color: #d1d5db;
+            --cor-c2-color: #93c5fd;
+            --cor-c3-color: #60a5fa;
+            --cor-outline-color: #374151;
+            --cor-text-color: #4b5563;
+        }
+        .comparison-container .col-md-6:not(:first-child) {
+            border-left: 1px solid #dee2e6;
+        }
+        #interactive-viz-area .network-container {
+            text-align: center;
+            padding: 0 1.5rem;
+            min-height: 350px;
+        }
+        #interactive-viz-area h5 {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        #interactive-viz-area p.viz-description {
+            font-size: 0.9rem;
+            color: #6c757d;
+            min-height: 25px;
+        }
+        #interactive-viz-area .network-visualization {
+            position: relative;
+            padding: 20px 0;
+        }
+        #interactive-viz-area .network-visualization.dimmed .neuron:not(.highlight),
+        #interactive-viz-area .network-visualization.dimmed .connections-svg line:not(.highlight) {
+            opacity: 0.1;
+        }
+        #interactive-viz-area .layer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 60px 0;
+        }
+        #interactive-viz-area .neuron {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            background-color: #ffffff;
+        }
+        #interactive-viz-area .neuron.group-grey { border: 3px solid var(--color-grey); }
+        #interactive-viz-area .neuron.group-blue { border: 3px solid var(--color-blue); }
+        #interactive-viz-area .neuron.group-lightblue { border: 3px solid var(--color-lightblue); }
+        #interactive-viz-area .neuron.group-linear { border: 3px solid var(--color-linear); }
+        #interactive-viz-area .neuron.highlight {
+            transform: scale(1.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1), 0 0 20px var(--color-highlight);
+            border-color: var(--color-highlight);
+            opacity: 1 !important;
+        }
+        #interactive-viz-area .connections-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        #interactive-viz-area .connections-svg line {
+            stroke-width: 1.5px;
+            stroke: var(--color-line);
+            stroke-dasharray: 2, 2;
+            transition: all 0.3s ease-in-out;
+        }
+        #interactive-viz-area .connections-svg line.highlight {
+            stroke: var(--color-line-highlight);
+            stroke-width: 2px;
+            stroke-dasharray: none;
+            opacity: 1 !important;
+        }
+        
+        #cor-viz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        #cor-viz-container .cor-svg {
+            width: 100%;
+            overflow: visible;
+        }
+        #cor-viz-container .cor-svg text {
+            fill: var(--cor-text-color);
+            font-size: 14px;
+        }
+        #cor-viz-container .cor-svg .label-caption {
+            font-style: italic;
+        }
+        #cor-viz-container .cor-svg .neuron-box {
+            stroke: var(--cor-outline-color);
+            stroke-width: 2px;
+            fill: none;
+        }
+        #cor-viz-container .cor-svg .cor-neuron {
+            stroke: var(--cor-outline-color);
+            stroke-width: 2px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        #cor-viz-container .cor-svg .chain-divider {
+            stroke: #e5e7eb;
+            stroke-width: 1.5px;
+            stroke-dasharray: 4, 4;
+        }
+        #cor-viz-container .cor-svg .scale-annotation {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        #cor-viz-container .cor-svg .scale-annotation.active {
+            opacity: 1;
+        }
+        #cor-viz-container .cor-svg .scale-line {
+            stroke: #9ca3af;
+            stroke-width: 1.5px;
+            stroke-dasharray: 3, 3;
+        }
+        #cor-viz-container .scale-selector {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        #cor-viz-container .scale-selector button {
+            background-color: #f0f0f0;
+            border: 1px solid #e0e0e0;
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #3d3d3f;
+        }
+        #cor-viz-container .scale-selector button:hover,
+        #cor-viz-container .scale-selector button.active-hover {
+            background-color: #0071e3;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 113, 227, 0.2);
         }
     </style>
 </head>
@@ -167,7 +309,7 @@
     <header class="text-center">
         <div class="container">
             <h1 class="display-4 fw-bold main-title">Chain-of-Model Learning for Language Models</h1>
-            <p class="lead mt-3 mb-4">A revolutionary architecture for efficient scaling and elastic inference.</p>
+            <p class="lead mt-3 mb-4">A new architecture for efficient scaling and elastic inference.</p>
             <div class="d-flex justify-content-center align-items-center gap-4">
                 <a href="https://arxiv.org/abs/2505.11820v2" class="btn-link-icon" target="_blank">Read paper</a>
                 <a href="https://github.com/microsoft/CoLM" class="btn-link-icon" target="_blank">View code</a>
@@ -179,41 +321,106 @@
     <section class="abstract-section">
         <div class="container">
             <div class="row justify-content-center">
-                <!-- MODIFIED: Uses a narrower column (7/12) on large screens for a focused look -->
                 <div class="col-lg-7 abstract-content">
                     <p>We propose a novel learning paradigm, termed <strong>“Chain-of-Model” (CoM)</strong>, which incorporates a causal, chain-like structure into the hidden states of each layer. This approach introduces powerful new efficiencies in model training and unprecedented flexibility for deployment.</p>
                     <p>The foundation of CoM is <strong>“Chain-of-Representation” (CoR)</strong>, which formulates the hidden state at each layer as a combination of multiple sub-representations, or “chains.” Critically, each chain in the output can only see its preceding input chains, enforcing a causal dependency. This structure allows a single model to house multiple sub-models of varying sizes.</p>
                     <p>As a result, models built on the CoM framework can be progressively scaled by adding new chains to existing ones, and they can offer elastic inference by activating a variable number of chains. Our experimental results demonstrate that our CoLM family of models achieves performance comparable to standard Transformers while offering these significant advantages in extensibility and adaptability.</p>
                 </div>
             </div>
-        </div>
-    </section>
-
+        </section>
+    
     <!-- Main Content -->
     <main class="container-fluid p-0">
         <!-- Interactive Module Section -->
         <section class="my-5 py-5 interactive-module-section">
             <div class="container">
                 <h2 class="text-center fw-bold">How CoLM Works: An Interactive Look</h2>
-                <p class="fs-5 text-muted col-lg-8 mx-auto text-center mt-3">CoLM applies the chain principle to the core components of the Transformer architecture. Click a tab below to see how each module is adapted.</p>
-                <ul class="nav nav-pills justify-content-center my-4" id="pills-tab" role="tablist">
-                    <li class="nav-item" role="presentation"><button class="nav-link active" id="pills-linear-tab" data-bs-toggle="pill" data-bs-target="#pills-linear" type="button" role="tab">Chain-of-Linear</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" id="pills-attention-tab" data-bs-toggle="pill" data-bs-target="#pills-attention" type="button" role="tab">Chain-of-Attention</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" id="pills-kv-tab" data-bs-toggle="pill" data-bs-target="#pills-kv" type="button" role="tab">CoLM-Air (KV Sharing)</button></li>
-                </ul>
-                <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-linear" role="tabpanel"><div class="row align-items-center"><div class="col-md-7"><img src="https://i.imgur.com/HnK25vO.png" class="img-fluid rounded-3" alt="Comparison of a standard Linear layer and a Chain-of-Linear layer."></div><div class="col-md-5"><h3 class="fw-semibold">The Building Block: Chain-of-Linear</h3><p>This is the fundamental component. Unlike a standard dense layer, the Chain-of-Linear layer has a causal structure. The output of chain `i` is only conditioned on the inputs from chains `1` to `i`, creating a nested, progressive computation that is key to CoLM's flexibility.</p></div></div></div>
-                    <div class="tab-pane fade" id="pills-attention" role="tabpanel"><div class="row align-items-center"><div class="col-md-7"><img src="https://i.imgur.com/k6KxO2E.png" class="img-fluid rounded-3" alt="Comparison of standard Attention and Chain-of-Attention."></div><div class="col-md-5"><h3 class="fw-semibold">The Core: Chain-of-Attention</h3><p>We extend the chain concept to the Multi-Head Attention mechanism. Each head is allocated to a specific chain, ensuring that information from different scales does not improperly blend. This preserves the causal structure and allows for dedicated query, key, and value computations per chain.</p></div></div></div>
-                    <div class="tab-pane fade" id="pills-kv" role="tabpanel"><div class="row align-items-center"><div class="col-md-7"><img src="https://i.imgur.com/8QfH4v9.png" class="img-fluid rounded-3" alt="Diagram showing KV sharing in CoLM-Air."></div><div class="col-md-5"><h3 class="fw-semibold">The Accelerator: CoLM-Air</h3><p>For maximum efficiency, CoLM-Air computes all Key and Value pairs within the first chain only. These are then shared across all subsequent chains. This ambitious design drastically reduces computation during inference, leading to the breakthrough in prefilling speed.</p></div></div></div>
+                <p class="fs-5 text-muted col-lg-8 mx-auto text-center mt-3">CoLM applies the chain principle to the core components of the Transformer architecture.</p>
+                
+                <div id="interactive-viz-area">
+                    <!-- Main Tabs -->
+                    <ul class="nav nav-pills justify-content-center my-4" id="main-pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation"><button class="nav-link active" id="pills-main-representation-tab" data-bs-toggle="pill" data-bs-target="#pills-main-representation" type="button" role="tab">Chain-of-Representation</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" id="pills-main-linear-tab" data-bs-toggle="pill" data-bs-target="#pills-main-linear" type="button" role="tab">Linear</button></li>
+                        <li class="nav-item" role="presentation"><button class="nav-link" id="pills-main-attention-tab" data-bs-toggle="pill" data-bs-target="#pills-main-attention" type="button" role="tab">Chain-of-Attention</button></li>
+                    </ul>
+                    <!-- Main Tab Content -->
+                    <div class="tab-content" id="main-pills-tabContent">
+                        
+                        <!-- Pane 1: Chain-of-Representation -->
+                        <div class="tab-pane fade show active" id="pills-main-representation" role="tabpanel">
+                            <div class="row mb-4">
+                                <div class="col-lg-10 mx-auto text-start">
+                                    <p style="font-size: 1.05rem; color: #3d3d3f;">
+                                        <strong>Chain-of-Representation (CoR)</strong> is the fundamental concept of CoLM. It formulates a standard representation as a concatenation of multiple "chains." Each chain is a sub-representation, and by activating a different number of chains, the model can operate at different "scales" of complexity and knowledge. 
+                                    </p>
+                                    <p style="font-size: 1.05rem; color: #3d3d3f;">
+                                        For example, activating only the first chain (Scale 1) uses the smallest version of the model. Activating the first two chains (Scale 2) leverages a larger, more capable model that builds upon the first. This structure is what enables a single trained CoLM model to provide multiple sub-models for elastic inference, a key advantage over standard architectures.
+                                    </p>
+                                </div>
+                            </div>
+                            <div id="cor-viz-container">
+                                <svg id="cor-svg" class="cor-svg" viewBox="0 0 800 320"></svg>
+                            </div>
+                        </div>
+
+                        <!-- Pane 2: Linear Comparison -->
+                        <div class="tab-pane fade" id="pills-main-linear" role="tabpanel">
+                            <div class="row comparison-container">
+                                <div class="col-md-6">
+                                    <div class="network-container">
+                                        <h5>Chain-of-Linear</h5>
+                                        <p class="viz-description">Causal, grouped connections.</p>
+                                        <div class="network-visualization" id="network-brain">
+                                            <div class="layer top-layer"></div>
+                                            <div class="layer bottom-layer"></div>
+                                            <svg class="connections-svg"></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="network-container">
+                                        <h5>Standard Linear</h5>
+                                        <p class="viz-description">Dense, all-to-all connections.</p>
+                                        <div class="network-visualization" id="network-linear">
+                                            <div class="layer top-layer"></div>
+                                            <div class="layer bottom-layer"></div>
+                                            <svg class="connections-svg"></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pane 3: Attention Comparison -->
+                        <div class="tab-pane fade" id="pills-main-attention" role="tabpanel">
+                            <div class="row comparison-container">
+                                <div class="col-md-6">
+                                     <div class="network-container">
+                                        <h5>Chain-of-Attention</h5>
+                                        <p class="viz-description">Attention heads are partitioned into chains, maintaining causal structure.</p>
+                                        <img src="assets/Chain-of-Attention.png" class="img-fluid rounded-3 mt-4" alt="Comparison of standard Attention and Chain-of-Attention.">
+                                     </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="network-container">
+                                        <h5>CoLM-Air (KV Sharing)</h5>
+                                        <p class="viz-description">Key/Value pairs are computed in the first chain and shared across all subsequent chains.</p>
+                                        <img src="assets/CoLM-AIR.png" class="img-fluid rounded-3 mt-4" alt="Diagram showing KV sharing in CoLM-Air.">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Innovative Results Section -->
-        <section class="my-5 py-5">
+        <!-- Results Section -->
+         <section class="my-5 py-5">
             <div class="container">
                 <h2 class="text-center fw-bold">Competitive Performance, Unmatched Flexibility</h2>
-                <p class="fs-5 text-muted col-lg-8 mx-auto text-center mt-3">CoLM delivers results on par with standard Transformers of similar size, proving you don't have to sacrifice performance to gain architectural flexibility and efficiency.</p>
+                <p class="fs-5 text-muted col-lg-8 mx-auto text-center mt-3">CoLM delivers results on par with standard Transformers of similar size, proving that architectural flexibility and efficiency can be achieved without sacrificing performance.</p>
                 <div class="results-board mt-5">
                     <div class="results-header"><div style="text-align: left;">Benchmark</div><div>Baseline (1.10B)</div><div>CoLM (1.11B)</div><div>CoLM-Air (1.11B)</div></div>
                     <div class="results-row"><div class="benchmark-name">HellaSwag</div><div class="score">40.01</div><div class="score">40.25</div><div class="score">39.85</div></div>
@@ -227,23 +434,23 @@
                 </div>
             </div>
         </section>
-
-        <!-- The Breakthrough Section -->
+        
+        <!-- Prefilling Section -->
         <section class="my-5 py-5 bg-dark-section text-white rounded-4 container">
             <div class="container text-center">
                 <h2 class="fw-bold">The Breakthrough: Blazing-Fast Prefilling</h2>
-                <p class="fs-5 text-muted-white col-lg-8 mx-auto mt-3">By sharing Key-Value (KV) caches, our CoLM-Air variant radically accelerates the prefilling stage—a major bottleneck in long-context inference.</p>
-                <img src="https://i.imgur.com/uR2iJd0.png" class="img-fluid rounded-3 mt-4" alt="Charts showing CoLM-Air achieving significantly faster prefilling speeds.">
-                <p class="fs-4 mt-4 fw-bold">Achieve up to 27x faster prefilling speeds.</p>
+                <p class="fs-5 text-muted-white col-lg-8 mx-auto mt-3">By computing keys and values only in the first chain, our CoLM-Air variant radically accelerates the prefilling stage—a major bottleneck in long-context inference.</p>
+                <img src="assets/Prefilling.png" class="img-fluid rounded-3 mt-4" alt="Charts showing CoLM-Air achieving significantly faster prefilling speeds.">
+                <p class="fs-4 mt-4 fw-bold">Achieve up to 27x faster prefilling speeds with MInference.</p>
             </div>
         </section>
 
-        <!-- Full Architecture Section -->
+        <!-- Architecture Diagram Section -->
         <section class="my-5 py-5">
             <div class="container text-center">
                  <h2 class="fw-bold">The Complete CoLM Architecture</h2>
                  <p class="fs-5 text-muted col-lg-8 mx-auto mt-3">This diagram illustrates the full data flow within a CoLM layer. It shows how embeddings are processed through chain-aware normalization, attention with KV sharing, and a chained feed-forward network to produce progressively refined outputs for each scale.</p>
-                 <img src="https://i.imgur.com/Wd4x4Rz.png" class="img-fluid rounded-3 mt-4 border shadow-sm" alt="Full architecture diagram of the CoLM model.">
+                 <img src="assets/Transformer.png" class="img-fluid rounded-3 mt-4 border shadow-sm" alt="Full architecture diagram of the CoLM model.">
             </div>
         </section>
 
@@ -259,5 +466,301 @@
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Visualization JS -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- Logic for Chain-of-Linear Visualization ---
+        function initializeLinearNetworks() {
+            const container = document.getElementById('pills-main-linear');
+            if(container && !container.dataset.initialized) {
+                const createNetwork = (containerId, config, connectionLogic, defaultHighlightIndex = -1) => {
+                    const networkVis = document.getElementById(containerId);
+                    if (!networkVis) return;
+                    const topLayer = networkVis.querySelector('.top-layer');
+                    const bottomLayer = networkVis.querySelector('.bottom-layer');
+                    const svg = networkVis.querySelector('.connections-svg');
+                    let topNeurons = [];
+                    let bottomNeurons = [];
+                    
+                    const createNeurons = (layer, neuronArray, prefix) => {
+                        layer.innerHTML = '';
+                        config.forEach((group, groupIndex) => {
+                            for (let i = 0; i < group.count; i++) {
+                                const neuronIndex = neuronArray.length;
+                                const neuron = document.createElement('div');
+                                neuron.className = `neuron ${group.className}`;
+                                neuron.id = `${prefix}-${neuronIndex}`;
+                                neuron.dataset.groupIndex = groupIndex;
+                                layer.appendChild(neuron);
+                                neuronArray.push(neuron);
+                            }
+                        });
+                    };
+
+                    const createConnections = () => {
+                        svg.innerHTML = '';
+                        topNeurons.forEach(topNeuron => {
+                            const topRect = topNeuron.getBoundingClientRect();
+                            const vizRect = networkVis.getBoundingClientRect();
+                            const startX = topRect.left - vizRect.left + topRect.width / 2;
+                            const startY = topRect.top - vizRect.top + topRect.height / 2;
+                            bottomNeurons.forEach(bottomNeuron => {
+                                if (connectionLogic(topNeuron, bottomNeuron)) {
+                                    const bottomRect = bottomNeuron.getBoundingClientRect();
+                                    const endX = bottomRect.left - vizRect.left + bottomRect.width / 2;
+                                    const endY = bottomRect.top - vizRect.top + bottomRect.height / 2;
+                                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                                    line.setAttribute('x1', startX);
+                                    line.setAttribute('y1', startY);
+                                    line.setAttribute('x2', endX);
+                                    line.setAttribute('y2', endY);
+                                    line.dataset.source = topNeuron.id;
+                                    line.dataset.target = bottomNeuron.id;
+                                    svg.appendChild(line);
+                                }
+                            });
+                        });
+                    };
+
+                    const clearHighlights = () => {
+                        networkVis.classList.remove('dimmed');
+                        networkVis.querySelectorAll('.highlight').forEach(el => el.classList.remove('highlight'));
+                    };
+
+                    const highlightNeuronAndConnections = (neuron) => {
+                        if (!neuron) return;
+                        clearHighlights();
+                        networkVis.classList.add('dimmed');
+                        const lines = svg.querySelectorAll(`line[data-source="${neuron.id}"], line[data-target="${neuron.id}"]`);
+                        neuron.classList.add('highlight');
+                        lines.forEach(line => {
+                            line.classList.add('highlight');
+                            document.getElementById(line.dataset.source)?.classList.add('highlight');
+                            document.getElementById(line.dataset.target)?.classList.add('highlight');
+                        });
+                    };
+
+                    const handleMouseOver = e => {
+                        if (!e.target.classList.contains('neuron')) return;
+                        highlightNeuronAndConnections(e.target);
+                    };
+
+                    const handleMouseOut = () => {
+                        clearHighlights();
+                        if (defaultHighlightIndex > -1 && topNeurons[defaultHighlightIndex]) {
+                            highlightNeuronAndConnections(topNeurons[defaultHighlightIndex]);
+                        }
+                    };
+
+                    createNeurons(topLayer, topNeurons, `${containerId}-top`);
+                    createNeurons(bottomLayer, bottomNeurons, `${containerId}-bottom`);
+                    
+                    requestAnimationFrame(() => {
+                        createConnections();
+                        networkVis.addEventListener('mouseover', handleMouseOver);
+                        networkVis.addEventListener('mouseout', handleMouseOut);
+
+                        if (defaultHighlightIndex > -1 && topNeurons[defaultHighlightIndex]) {
+                            highlightNeuronAndConnections(topNeurons[defaultHighlightIndex]);
+                        }
+                    });
+                };
+                
+                const brainConfig = [{ count: 2, className: 'group-grey' }, { count: 2, className: 'group-blue' }, { count: 4, className: 'group-lightblue' }];
+                const brainConnectionLogic = (top, bottom) => parseInt(bottom.dataset.groupIndex) <= parseInt(top.dataset.groupIndex);
+                // Highlight the 4th neuron (index 3) in the top layer
+                createNetwork('network-brain', brainConfig, brainConnectionLogic, 3);
+
+                const linearConfig = [{ count: 8, className: 'group-linear' }];
+                const linearConnectionLogic = () => true;
+                createNetwork('network-linear', linearConfig, linearConnectionLogic); // No default highlight
+
+                container.dataset.initialized = 'true';
+            }
+        }
+        
+        // --- Logic for Chain-of-Representation Visualization ---
+        function initializeRepresentationViz() {
+            const container = document.getElementById('pills-main-representation');
+             if(container && !container.dataset.initialized) {
+                const svgNS = "http://www.w3.org/2000/svg";
+                const svg = document.getElementById('cor-svg');
+                const corVizContainer = document.getElementById('cor-viz-container');
+
+                const chainConfig = [
+                    { count: 2, color: 'var(--cor-c1-color)' },
+                    { count: 2, color: 'var(--cor-c2-color)' },
+                    { count: 4, color: 'var(--cor-c3-color)' }
+                ];
+                const totalNeurons = chainConfig.reduce((sum, g) => sum + g.count, 0);
+                const neuronRadius = 16;
+                const neuronSpacing = 45;
+                const totalWidth = totalNeurons * neuronSpacing;
+                
+                let corNeurons = [];
+
+                function drawRepresentation(yOffset, isChained) {
+                    const startX = (800 - totalWidth) / 2 + neuronRadius;
+                    const box = document.createElementNS(svgNS, 'rect');
+                    box.setAttribute('x', startX - neuronSpacing / 2);
+                    box.setAttribute('y', yOffset - neuronRadius - 5);
+                    box.setAttribute('width', totalWidth - neuronSpacing + 2 * (neuronSpacing/2));
+                    box.setAttribute('height', 2 * neuronRadius + 10);
+                    box.setAttribute('class', 'neuron-box');
+                    box.setAttribute('rx', 5);
+                    svg.appendChild(box);
+
+                    let currentX = startX;
+                    chainConfig.forEach((group, groupIndex) => {
+                        for(let i=0; i < group.count; i++) {
+                            const neuron = document.createElementNS(svgNS, 'circle');
+                            neuron.setAttribute('cx', currentX);
+                            neuron.setAttribute('cy', yOffset);
+                            neuron.setAttribute('r', neuronRadius);
+                            neuron.setAttribute('fill', isChained ? group.color : 'var(--cor-c1-color)');
+                            if (isChained) {
+                                neuron.setAttribute('class', 'cor-neuron');
+                                neuron.dataset.chain = groupIndex + 1;
+                                corNeurons.push(neuron);
+                            } else {
+                                neuron.setAttribute('class', 'cor-neuron-standard');
+                            }
+                            svg.appendChild(neuron);
+                            currentX += neuronSpacing;
+                        }
+                        if (isChained && groupIndex < chainConfig.length - 1) {
+                             const divider = document.createElementNS(svgNS, 'line');
+                             divider.setAttribute('x1', currentX - neuronSpacing / 2);
+                             divider.setAttribute('y1', yOffset - neuronRadius - 5);
+                             divider.setAttribute('x2', currentX - neuronSpacing / 2);
+                             divider.setAttribute('y2', yOffset + neuronRadius + 5);
+                             divider.setAttribute('class', 'chain-divider');
+                             svg.appendChild(divider);
+                        }
+                    });
+                    return { startX };
+                }
+
+                drawRepresentation(50, false);
+                const standardLabel = document.createElementNS(svgNS, 'text');
+                standardLabel.setAttribute('x', 400);
+                standardLabel.setAttribute('y', 105);
+                standardLabel.setAttribute('text-anchor', 'middle');
+                standardLabel.textContent = '(a) Standard Representation';
+                standardLabel.setAttribute('class', 'label-caption');
+                svg.appendChild(standardLabel);
+
+                const { startX: corStartX } = drawRepresentation(200, true);
+                
+                let chainLabelX = corStartX;
+                chainConfig.forEach((group, i) => {
+                    const label = document.createElementNS(svgNS, 'text');
+                    const xPos = chainLabelX + (group.count * neuronSpacing) / 2 - neuronSpacing / 2;
+                    label.setAttribute('y', 255);
+                    label.setAttribute('x', xPos);
+                    label.setAttribute('text-anchor', 'middle');
+                    label.textContent = `Chain ${i+1}`;
+                    svg.appendChild(label);
+                    chainLabelX += group.count * neuronSpacing;
+                });
+                
+                const corLabel = document.createElementNS(svgNS, 'text');
+                corLabel.setAttribute('x', 400);
+                corLabel.setAttribute('y', 285);
+                corLabel.setAttribute('text-anchor', 'middle');
+                corLabel.textContent = '(b) Chain-of-Representation';
+                corLabel.setAttribute('class', 'label-caption');
+                svg.appendChild(corLabel);
+                
+                const selectorContainer = document.createElement('div');
+                selectorContainer.className = 'scale-selector';
+                for (let i = 1; i <= 3; i++) {
+                    const btn = document.createElement('button');
+                    btn.textContent = `Scale ${i}`;
+                    btn.dataset.scale = i;
+                    selectorContainer.appendChild(btn);
+                }
+                corVizContainer.prepend(selectorContainer);
+
+                const defs = document.createElementNS(svgNS, 'defs');
+                const marker = document.createElementNS(svgNS, 'marker');
+                marker.id = 'arrowhead'; marker.setAttribute('viewBox', '0 0 10 10'); marker.setAttribute('refX', '8'); marker.setAttribute('refY', '5'); marker.setAttribute('markerWidth', '6'); marker.setAttribute('markerHeight', '6'); marker.setAttribute('orient', 'auto-start-reverse');
+                const path = document.createElementNS(svgNS, 'path');
+                path.setAttribute('d', 'M 0 0 L 10 5 L 0 10 z'); path.setAttribute('fill', '#9ca3af');
+                marker.appendChild(path); defs.appendChild(marker); svg.prepend(defs);
+
+                let accumulatedWidth = corStartX - neuronSpacing/2;
+                chainConfig.forEach((group, i) => {
+                    const scale = i + 1;
+                    const endWidth = accumulatedWidth + (group.count * neuronSpacing);
+                    const arrowGroup = document.createElementNS(svgNS, 'g');
+                    arrowGroup.id = `scale-annotation-${scale}`; arrowGroup.setAttribute('class', 'scale-annotation');
+                    const line = document.createElementNS(svgNS, 'line');
+                    line.setAttribute('x1', corStartX-10); line.setAttribute('y1', 160); line.setAttribute('x2', endWidth - neuronSpacing/2 + 10); line.setAttribute('y2', 160); line.setAttribute('class', 'scale-line'); line.setAttribute('marker-end', 'url(#arrowhead)');
+                    const text = document.createElementNS(svgNS, 'text');
+                    text.setAttribute('x', (corStartX - 10 + endWidth - neuronSpacing/2 + 10)/2); text.setAttribute('y', 152); text.setAttribute('text-anchor', 'middle'); text.textContent = `Scale ${scale}`;
+                    arrowGroup.appendChild(line); arrowGroup.appendChild(text); svg.appendChild(arrowGroup);
+                    accumulatedWidth = endWidth;
+                });
+                
+                function setScaleState(activeScale) {
+                    document.querySelectorAll('#cor-viz-container .scale-selector button').forEach(b => {
+                        b.classList.toggle('active-hover', b.dataset.scale == activeScale);
+                    });
+                    document.querySelectorAll('#cor-viz-container .scale-annotation').forEach(a => {
+                        a.classList.toggle('active', a.id === `scale-annotation-${activeScale}`);
+                    });
+                    corNeurons.forEach(n => {
+                        n.style.opacity = !activeScale || n.dataset.chain <= activeScale ? 1 : 0.2;
+                    });
+                }
+                
+                selectorContainer.addEventListener('mouseover', e => {
+                    if (e.target.tagName === 'BUTTON') {
+                       setScaleState(e.target.dataset.scale);
+                    }
+                });
+
+                selectorContainer.addEventListener('mouseout', () => {
+                    setScaleState(2);
+                });
+
+                setScaleState(2);
+                
+                svg.addEventListener('mouseover', e => {
+                    if (!e.target.classList.contains('cor-neuron')) return;
+                    const activeChain = e.target.dataset.chain;
+                    corNeurons.forEach(n => n.style.opacity = n.dataset.chain === activeChain ? 1 : 0.2);
+                });
+                svg.addEventListener('mouseout', e => {
+                     if (!e.target.classList.contains('cor-neuron')) return;
+                     setScaleState(2);
+                });
+
+                container.dataset.initialized = 'true';
+             }
+        }
+        
+        // --- Tab Initialization Logic ---
+        const representationTab = document.querySelector('#pills-main-representation-tab');
+        if (representationTab) {
+            representationTab.addEventListener('shown.bs.tab', initializeRepresentationViz);
+        }
+        if (document.querySelector('#pills-main-representation')?.classList.contains('show')) {
+            initializeRepresentationViz();
+        }
+
+        const linearMainTab = document.querySelector('#pills-main-linear-tab');
+        if (linearMainTab) {
+            linearMainTab.addEventListener('shown.bs.tab', initializeLinearNetworks);
+        }
+        if(document.querySelector('#pills-main-linear')?.classList.contains('show')) {
+            initializeLinearNetworks();
+        }
+
+    });
+    </script>
 </body>
 </html>
